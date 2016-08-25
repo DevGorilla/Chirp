@@ -4,3 +4,5 @@ target
 *.log
 logs
 *.pyc
+.ds_store
+node_modules

@@ -1,5 +1,5 @@
 # Module: V01
-# Goals: 
+# Goals:
 * Create an S3 bucket
 * Create a Cloudfront distribution in front of that bucket
 * Point your CNAME at cloudfront
@@ -13,18 +13,18 @@ to do using the AWS API calls and shell scripts, because it would save you a lot
 for today I want you to do it through the console as an introduction to how the console works, and also to learn how to
 MVP things quickly on AWS.
 
-Please be aware that these instructions were last updated July 2016.  AWS changes their stuff **ALL THE TIME**, so its 
+Please be aware that these instructions were last updated July 2016.  AWS changes their stuff **ALL THE TIME**, so its
 likely you'll find things that this doesn't mention.  If this happens, leave them at their defaults.  If everything breaks,
 let me know and I'll update the doc.
 
 ## Create an S3 bucket
 * Login to your AWS account, go to the AWS console, and select "S3" (Red section)
-* Create a new bucket (Hit the **Create Bucket**) button.  Doesn't really matter what you name it, but remember since 
+* Create a new bucket (Hit the **Create Bucket**) button.  Doesn't really matter what you name it, but remember since
 we'll use it a lot.  I'm going to assume you called the bucket **my-bucket**, so any place you see **my-bucket** in here
 replace that with what you used.  I can't tell you what to name it, exactly, since bucket names need to be globally unique.
 
 ## Create a HTTPS certificate
-* First, make sure you can receive email as the administrator for your domain.  For example, if 
+* First, make sure you can receive email as the administrator for your domain.  For example, if
 your domain is xyz.com, try sending an email to "administrator@xyz.com".  You'll need this to verify
 your ownership of the domain for the certificate.
 * Go to the AWS console, and select "Certificate Manager" (under Security and Identity)
@@ -40,7 +40,7 @@ certificate manager later
 * Go to the AWS console, and select "Cloudfront" (Red Section)
 * Hit "Create Distribution", and select a Web distribution
 * The origin domain is the S3 bucket you just created.  It should be in the drop-list
-* Origin path can stay blank 
+* Origin path can stay blank
 * Origin ID can be left to what AMZN sets it
 * Set "Restrict Bucket Access" to **Yes**
 * For "Origin Access Identity" select **Create new identity**
@@ -65,15 +65,15 @@ one of the most important things you can do for a fast website)
 * Leave Logging set to **Off** for now (In production you'd want ON)
 * Set distribution state to **Enabled**
 * Hit "Create Distribution"
-* Once you see the "creating" page, you'll want to go to the distributions page.  You should see your new distribution being 
-created.  It'll be in status "Updating" or something similar.  You won't be able to hit your content until it switches to 
+* Once you see the "creating" page, you'll want to go to the distributions page.  You should see your new distribution being
+created.  It'll be in status "Updating" or something similar.  You won't be able to hit your content until it switches to
 status "Deployed", which takes about 15-25 minutes.  You can do the next step (Setup CNAMEs) while this is still running.
 
 ## Point your CNAME at cloudfront
 * In the list of CloudFront distributions, click the ID of the one you just created
 * Note the value under "Domain Name", it should be something like DXXXXXXXX.cloudfront.net.  Copy this value
 * Login to GoDaddy in another window (or your DNS provider)
-* Go to the editor for the DNS zone file for your domain, and create a CNAME, **www.yourdomain.com**  = **DXXXXX.cloudfront.net** 
+* Go to the editor for the DNS zone file for your domain, and create a CNAME, **www.yourdomain.com**  = **DXXXXX.cloudfront.net**
     (the value on the clipboard)
 ** How you do this varies greatly depending on your DNS provider    
 * Save your changes/Write the DNS zone file
@@ -87,8 +87,7 @@ status "Deployed", which takes about 15-25 minutes.  You can do the next step (S
 * In the AWS console, select S3, then select **my-bucket**
 * Hit **Actions**, **Upload**, and then upload your file into the bucket
 * Once its there, select your file and hit **Properties** on the right hand side
-* Expand the **Metadata** section, you should see a **Content Type = text/html** metadata in there.  That's because
- S3 will serve this metadata as headers when the objects are requested over HTTP
+* Expand the **Metadata** section, you should see a **Content Type = text/html** metadata in there.  That's because S3 will serve this metadata as headers when the objects are requested over HTTP
 * Add a metadata entry, **Cache-Control** with a value **max-age=30**.  We do this because we are currently developing, and
  we don't want Cloudfront caching our stuff for its default length (which is one day)
 * Hit the save button
