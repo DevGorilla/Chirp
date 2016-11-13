@@ -1,0 +1,29 @@
+body{background-color:#ecf0f1}
+
+::selection {
+    background-color: #abecc7;
+}
+
+#error{
+  color: red;
+  font-size: .6em;
+}
+.date{
+  color : #7f8c8d;
+  font-size: .7em;
+}
+
+.user-name{
+  color : #3498db;
+  display: inline;
+}
+
+
+
+
+@media screen and (max-width: 800px) {
+
+    div {
+        width:100% !important;
+    }
+}
