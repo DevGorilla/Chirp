@@ -20,23 +20,26 @@ $(document).ready(function() {
 function postChirp() {
 
     var message = $("#chirpText").val()
+    console.log("postChirp " + message)
 
-    if (message && characterCount < 141) {
-      var characterCount = message.split("").length - 1
+    if (message){
+        var characterCount = message.split("").length - 1
+        console.log("Character Count: "+characterCount);
 
-      if (message && characterCount < 141) {
-        console.log("Post chirp");
-        httpPostAsync("https://ft2nhcyz7g.execute-api.us-east-1.amazonaws.com/prod/chirp",message)
+        if (message && characterCount < 141) {
+            console.log("Post chirp");
+            httpPostAsync("https://ft2nhcyz7g.execute-api.us-east-1.amazonaws.com/prod/chirp", message)
 
-      }else if (characterCount > 140) {
-
-        $("#error").html("<p>Chirps must be 140 characters or less!</p>")
-      }
+        } else if (characterCount > 140) {
+            $("#error").html("<p>Chirps must be 140 characters or less!</p>")
+        }
+    }else {
+      console.log("No Message");
     }
 }
 
 function updateChirps() {
-
+    console.log("Update Chirps")
     httpGetAsync("https://ft2nhcyz7g.execute-api.us-east-1.amazonaws.com/prod/chirp", function(results) {
 
         var newHtml = ""
@@ -52,7 +55,7 @@ function updateChirps() {
 
         $.each(items, function(idx, chirp) {
             newHtml += '<li class="list-group-item">';
-            newHtml += '<p class="user-name">Anonymous</p>:  ' + chirp.message.S;
+            newHtml += '<p class="user-name">Anonymous   </p><p id="chirp-text">' + chirp.message.S + "</p>";
             newHtml += '<p class="date">' + chirp.readable_date.S + '</p>'
             newHtml += '</li>';
         });
@@ -64,10 +67,9 @@ function updateChirps() {
 
 }
 
-function httpPostAsync(url,message) {
+function httpPostAsync(url, message) {
 
     var http = new XMLHttpRequest()
-
     var chirp = {
         "message": message
     }
@@ -75,13 +77,13 @@ function httpPostAsync(url,message) {
     var params = JSON.stringify(chirp)
 
     http.open("POST", url, true);
-
-    //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json")
 
     http.onreadystatechange = function() {
+      console.log(http.status);
         if (http.readyState == 4 && http.status == 200) {
             //TODO Make #chirpText value clear after Post
+
             updateChirps()
         }
     }

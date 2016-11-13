@@ -18,7 +18,11 @@ body{background-color:#ecf0f1}
   display: inline;
 }
 
-
+#chirp-text{
+  display: inline;
+  word-wrap: break-word;
+  width: 100px;
+}
 
 
 @media screen and (max-width: 800px) {
