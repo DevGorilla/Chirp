@@ -1,6 +1,6 @@
 
 
-![iphone6splusspacegrey_portrait](https://cloud.githubusercontent.com/assets/6393813/20248390/118a8f14-a998-11e6-9322-6c89c1500683.png)
+![chirp-min](https://cloud.githubusercontent.com/assets/6393813/20278571/122fdd94-aa5a-11e6-98b9-97e1def2f3ec.jpg)
 
 
 
