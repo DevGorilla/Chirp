@@ -12,7 +12,8 @@ module.exports = {
 
       console.log("Post...")
 
-      var hashkey = crypto.createHash('md5').update(event.message).digest("hex")
+
+      var hashkey = crypto.createHash('md5').update(moment().unix() + event.message).digest("hex")
 
 
       var params = {
