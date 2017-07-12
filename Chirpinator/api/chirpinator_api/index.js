@@ -1,21 +1,15 @@
-var crypto = require('crypto')
-var moment = require("moment")
-var AWS = require("aws-sdk")
+var crypto = require('crypto');
+var moment = require("moment");
+var AWS = require("aws-sdk");
 
-var dynamodb = new AWS.DynamoDB()
-var docClient = new AWS.DynamoDB.DocumentClient()
+var dynamodb = new AWS.DynamoDB();
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
   handler: function(event, context) {
-
     if (event && event.message) {
-
       console.log("Post...")
-
-
       var hashkey = crypto.createHash('md5').update(moment().unix() + event.message).digest("hex")
-
-
       var params = {
           TableName: "chirp",
           Item: {
@@ -33,20 +27,14 @@ module.exports = {
             context.done(null,"Successful Post " + hashkey)
          }
       })
-
-    }else{
-
+    } else {
       console.log("Get...")
-
       var params = {
         TableName: "chirp"
       }
-
       dynamodb.scan(params,function(err, data) {
         context.done(null,data)
       })
-
     }
-
   }
 }
